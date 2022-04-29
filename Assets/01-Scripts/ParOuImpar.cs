@@ -12,14 +12,24 @@ public class ParOuImpar : MonoBehaviour
     public Slider slrChoiceValue;
     [Space(-10, order = 0)]
     [Header("TMPro", order = 1)]
-    public TextMeshProUGUI tmpHand2Value;
+    public TextMeshProUGUI tmpTotalValue;
     public TextMeshProUGUI tmpResult;
     public TextMeshProUGUI tmpChoice;
     public TextMeshProUGUI tmpChoiceValue;
     [Space(-10, order = 0)]
-    [Header("Sprites", order = 1)]
+    [Header("Images", order = 1)]
+    public Image myHand;
+    public Image iaHand;
+
+    [Header("SPRITES", order = 0)]
+    [Space(-10, order = 1)]
+    [Header("Toggles", order = 2)]
     public Sprite toggleOn;
     public Sprite toggleOff;
+    [Space(-10, order = 0)]
+    [Header("fingers", order = 1)]
+    public Sprite[] fingers;
+     
     [Space(-10, order = 0)]
     [Header("Values", order = 1)]
     [SerializeField][Range(0, 5)] private int intHand1;
@@ -41,27 +51,18 @@ public class ParOuImpar : MonoBehaviour
 
     private void Start()
     {
-        on = true;
-        ButtonChoice();
+        StatusDefault();
     }
-
-    private void Update()
-    {
-        
-    }
-
+    
     public void ButtonStart()
     {
-        tmpHand2Value.text = Hand2Behaviour().ToString();
+        IAHandBehaviour();
+        myHand.GetComponent<Button>().interactable = true;
 
-        if (myChoice == Result())
-        {
-            StartCoroutine(Cor_Result(true));
-        }
-        else
-        {
-            StartCoroutine(Cor_Result(false));
-        }
+        StartCoroutine(Cor_Result(myChoice == Result()));
+       
+
+        tmpTotalValue.text = (intHand1 + intHand2).ToString();
     }
 
     public void ButtonChoice()
@@ -88,18 +89,15 @@ public class ParOuImpar : MonoBehaviour
         tmpChoiceValue.text = value.ToString();
 
         intHand1 = (int)value;
+
+        myHand.sprite = fingers[intHand1];
     }
 
     public int Calc(int value1, int value2)
     {
         return (value1 + value2) % 2;
     }
-
-    public int Calc(int value)
-    {
-        return value % 2;
-    }
-
+    
     public bool Result()
     {
         bool result;
@@ -116,10 +114,26 @@ public class ParOuImpar : MonoBehaviour
         return result;
     }
 
-    public int Hand2Behaviour()
+    public void IAHandBehaviour()
     {
         intHand2 = Random.Range(0, 5);
-        return intHand2;
+
+        iaHand.sprite = fingers[intHand2];
+
+        iaHand.gameObject.SetActive(true);
+    }
+
+    public void StatusDefault()
+    {
+        on = true;
+        ButtonChoice();
+        iaHand.gameObject.SetActive(false);
+        tmpTotalValue.text = "";
+        tmpResult.text = "";
+        btnStart.interactable = true; 
+        SliderChoice(0);
+        slrChoiceValue.value = 0;
+        myHand.GetComponent<Button>().interactable = false;
     }
 
     private IEnumerator Cor_Result(bool win)
@@ -136,8 +150,7 @@ public class ParOuImpar : MonoBehaviour
         btnStart.interactable = false;
 
         yield return new WaitForSeconds(3f);
-                
-        tmpResult.text = "";
-        btnStart.interactable = true;
+
+        StatusDefault();
     }
 }
