@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ParOuImpar : MonoBehaviour
+public class ParOuImpar : JogatinasBehaviours
 {    
     [Header("UI", order = 0)]
     public Button btnChoice;
@@ -51,7 +51,7 @@ public class ParOuImpar : MonoBehaviour
 
     private void Start()
     {
-        StatusDefault();
+        StatusDefault();        
     }
     
     public void ButtonStart()
@@ -130,7 +130,7 @@ public class ParOuImpar : MonoBehaviour
         iaHand.gameObject.SetActive(false);
         tmpTotalValue.text = "";
         tmpResult.text = "";
-        btnStart.interactable = true; 
+        ButtonInteractable(btnStart, true);
         SliderChoice(0);
         slrChoiceValue.value = 0;
         myHand.GetComponent<Button>().interactable = false;
@@ -147,7 +147,7 @@ public class ParOuImpar : MonoBehaviour
             tmpResult.text = "You Loose!";
         }
 
-        btnStart.interactable = false;
+        ButtonInteractable(btnStart, false);
 
         yield return new WaitForSeconds(3f);
 
