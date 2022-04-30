@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a7549ccf090b804db751697d0d46325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btnChoice: {fileID: 1735529006}
+  btnToggle: {fileID: 1735529006}
   btnStart: {fileID: 728007884}
   slrChoiceValue: {fileID: 1662406164}
   tmpTotalValue: {fileID: 31723042}
@@ -185,10 +185,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 06f9fb1e83323b546b252de219f1cb5b, type: 3}
   - {fileID: 21300000, guid: 18c6425f9e786de45bc3537820168699, type: 3}
   - {fileID: 21300000, guid: ed742aa5990188f44b3fcffe4168ad49, type: 3}
-  intHand1: 0
-  intHand2: 0
+  myFingers: 0
+  iaFingers: 0
   on: 0
-  myChoice: 0
+  par: 0
 --- !u!1 &31723040
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,8 +944,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 3375510066
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.7882353}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1707,7 +1707,7 @@ GameObject:
   - component: {fileID: 1735529007}
   - component: {fileID: 1735529006}
   m_Layer: 0
-  m_Name: btnChoice
+  m_Name: btnToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

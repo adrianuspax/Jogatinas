@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ParOuImpar : JogatinasBehaviours
 {
     [Header("UI", order = 0)]
-    public Button btnChoice;
+    public Button btnToggle;
     public Button btnStart;
     public Slider slrChoiceValue;
     [Space(-10, order = 0)]
@@ -32,17 +32,17 @@ public class ParOuImpar : JogatinasBehaviours
 
     [Space(-10, order = 0)]
     [Header("Values", order = 1)]
-    [SerializeField][Range(0, 5)] private int intHand1;
-    [SerializeField][Range(0, 5)] private int intHand2;
+    [SerializeField][Range(0, 5)] private int myFingers;
+    [SerializeField][Range(0, 5)] private int iaFingers;
     [Space(-10, order = 0)]
     [Header("Bools", order = 1)]
     [SerializeField] private bool on;
-    [SerializeField] private bool myChoice;
+    [SerializeField] private bool par;
 
     private void Awake()
     {
-        btnChoice.onClick = new Button.ButtonClickedEvent();
-        btnChoice.onClick.AddListener(() => ButtonChoice());
+        btnToggle.onClick = new Button.ButtonClickedEvent();
+        btnToggle.onClick.AddListener(() => ButtonChoice());
         btnStart.onClick = new Button.ButtonClickedEvent();
         btnStart.onClick.AddListener(() => ButtonStart());
 
@@ -57,12 +57,12 @@ public class ParOuImpar : JogatinasBehaviours
     public void ButtonStart()
     {
         IAHandBehaviour();
-        myHand.GetComponent<Button>().interactable = true;
+        ButtonInteractable(myHand.GetComponent<Button>(), true);
 
-        StartCoroutine(Cor_Result(myChoice == Result()));
+        StartCoroutine(Cor_Result(par == Result()));
 
 
-        tmpTotalValue.text = (intHand1 + intHand2).ToString();
+        tmpTotalValue.text = (myFingers + iaFingers).ToString();
     }
 
     public void ButtonChoice()
@@ -71,26 +71,26 @@ public class ParOuImpar : JogatinasBehaviours
 
         if (on)
         {
-            btnChoice.image.sprite = toggleOn;
+            btnToggle.image.sprite = toggleOn;
             tmpChoice.text = "ímpar";
         }
 
         if (!on)
         {
-            btnChoice.image.sprite = toggleOff;
+            btnToggle.image.sprite = toggleOff;
             tmpChoice.text = "Par";
         }
 
-        myChoice = !on;
+        par = !on;
     }
 
     public void SliderChoice(float value)
     {
         tmpChoiceValue.text = value.ToString();
 
-        intHand1 = (int)value;
+        myFingers = (int)value;
 
-        myHand.sprite = fingers[intHand1];
+        myHand.sprite = fingers[myFingers];
     }
 
     public int Calc(int value1, int value2)
@@ -102,7 +102,7 @@ public class ParOuImpar : JogatinasBehaviours
     {
         bool result;
 
-        if (Calc(intHand1, intHand2) == 0)
+        if (Calc(myFingers, iaFingers) == 0)
         {
             result = true;
         }
@@ -116,9 +116,9 @@ public class ParOuImpar : JogatinasBehaviours
 
     public void IAHandBehaviour()
     {
-        intHand2 = Random.Range(0, 5);
+        iaFingers = Random.Range(0, 5);
 
-        iaHand.sprite = fingers[intHand2];
+        iaHand.sprite = fingers[iaFingers];
 
         iaHand.gameObject.SetActive(true);
     }
@@ -133,7 +133,7 @@ public class ParOuImpar : JogatinasBehaviours
         ButtonInteractable(btnStart, true);
         SliderChoice(0);
         slrChoiceValue.value = 0;
-        myHand.GetComponent<Button>().interactable = false;
+        ButtonInteractable(myHand.GetComponent<Button>(), false);
     }
 
     private IEnumerator Cor_Result(bool win)
