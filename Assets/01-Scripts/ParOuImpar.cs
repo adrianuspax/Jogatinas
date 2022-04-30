@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ParOuImpar : JogatinasBehaviours
-{    
+{
     [Header("UI", order = 0)]
     public Button btnChoice;
     public Button btnStart;
@@ -29,7 +29,7 @@ public class ParOuImpar : JogatinasBehaviours
     [Space(-10, order = 0)]
     [Header("fingers", order = 1)]
     public Sprite[] fingers;
-     
+
     [Space(-10, order = 0)]
     [Header("Values", order = 1)]
     [SerializeField][Range(0, 5)] private int intHand1;
@@ -44,23 +44,23 @@ public class ParOuImpar : JogatinasBehaviours
         btnChoice.onClick = new Button.ButtonClickedEvent();
         btnChoice.onClick.AddListener(() => ButtonChoice());
         btnStart.onClick = new Button.ButtonClickedEvent();
-        btnStart.onClick.AddListener(() => ButtonStart());   
+        btnStart.onClick.AddListener(() => ButtonStart());
 
         slrChoiceValue.onValueChanged.AddListener(SliderChoice);
     }
 
     private void Start()
     {
-        StatusDefault();        
+        StatusDefault();
     }
-    
+
     public void ButtonStart()
     {
         IAHandBehaviour();
         myHand.GetComponent<Button>().interactable = true;
 
         StartCoroutine(Cor_Result(myChoice == Result()));
-       
+
 
         tmpTotalValue.text = (intHand1 + intHand2).ToString();
     }
@@ -97,7 +97,7 @@ public class ParOuImpar : JogatinasBehaviours
     {
         return (value1 + value2) % 2;
     }
-    
+
     public bool Result()
     {
         bool result;

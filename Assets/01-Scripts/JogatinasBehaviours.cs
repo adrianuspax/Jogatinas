@@ -8,15 +8,39 @@ public class JogatinasBehaviours : MonoBehaviour
 {
     public void ButtonInteractable(Button button, bool interactable)
     {
-        StartCoroutine(Cor_Interactable(button, interactable));
+        int childCount;
+
+        childCount = button.transform.childCount;
+
+        if (childCount != 0)
+        {
+            for (int i = 0; i < childCount; i++)
+            {
+                if (button.transform.GetChild(i).GetComponent<TextMeshProUGUI>() != null)
+                {
+                    StartCoroutine(Cor_Interactable(button, interactable, i));
+                    break;
+                }
+            }
+        }
+        else
+        {
+            StartCoroutine(Cor_Interactable(button, interactable));
+        }
     }
 
     IEnumerator Cor_Interactable(Button button, bool interactable)
     {
+        button.interactable = interactable;
+        yield return null;
+    }
+
+    IEnumerator Cor_Interactable(Button button, bool interactable, int index)
+    {
         Color32 color;
 
         button.interactable = interactable;
-        color = button.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color;
+        color = button.transform.GetChild(index).GetComponent<TextMeshProUGUI>().color;
 
         yield return null;
 
@@ -26,12 +50,12 @@ public class JogatinasBehaviours : MonoBehaviour
         }
         else
         {
-            color.a = 55;
+            color.a = 127;
         }
 
         yield return null;
-        
-        button.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = color;
+
+        button.transform.GetChild(index).GetComponent<TextMeshProUGUI>().color = color;
     }
 }
 
