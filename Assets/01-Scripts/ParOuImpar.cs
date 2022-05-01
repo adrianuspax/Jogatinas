@@ -10,6 +10,7 @@ public class ParOuImpar : JogatinasBehaviours
     public Button btnToggle;
     public Button btnStart;
     public Slider slrChoiceValue;
+    private Button btnMyHand;
     [Space(-10, order = 0)]
     [Header("TMPro", order = 1)]
     public TextMeshProUGUI tmpTotalValue;
@@ -36,17 +37,21 @@ public class ParOuImpar : JogatinasBehaviours
     [SerializeField][Range(0, 5)] private int iaFingers;
     [Space(-10, order = 0)]
     [Header("Bools", order = 1)]
-    [SerializeField] private bool on;
-    [SerializeField] private bool par;
+    [SerializeField] private bool myChoice;
+
+    const bool par = true;
+    const bool impar = !par;
 
     private void Awake()
     {
         btnToggle.onClick = new Button.ButtonClickedEvent();
-        btnToggle.onClick.AddListener(() => ButtonChoice());
+        btnToggle.onClick.AddListener(() => ButtonToggle(!myChoice));
         btnStart.onClick = new Button.ButtonClickedEvent();
         btnStart.onClick.AddListener(() => ButtonStart());
 
         slrChoiceValue.onValueChanged.AddListener(SliderChoice);
+
+        btnMyHand = myHand.GetComponent<Button>();
     }
 
     private void Start()
@@ -57,15 +62,15 @@ public class ParOuImpar : JogatinasBehaviours
     public void ButtonStart()
     {
         IAHandBehaviour();
-        ButtonInteractable(myHand.GetComponent<Button>(), true);
+        Interactable(true, btnMyHand);
 
-        StartCoroutine(Cor_Result(par == Result()));
+        StartCoroutine(Cor_Result(myChoice == Result()));
 
 
         tmpTotalValue.text = (myFingers + iaFingers).ToString();
     }
 
-    public void ButtonChoice()
+    public void ButtonToggle(bool on)
     {
         on = !on;
 
@@ -73,15 +78,15 @@ public class ParOuImpar : JogatinasBehaviours
         {
             btnToggle.image.sprite = toggleOn;
             tmpChoice.text = "ímpar";
+            myChoice = impar;
         }
 
         if (!on)
         {
             btnToggle.image.sprite = toggleOff;
             tmpChoice.text = "Par";
+            myChoice = par;
         }
-
-        par = !on;
     }
 
     public void SliderChoice(float value)
@@ -100,18 +105,14 @@ public class ParOuImpar : JogatinasBehaviours
 
     public bool Result()
     {
-        bool result;
-
         if (Calc(myFingers, iaFingers) == 0)
         {
-            result = true;
+            return true;
         }
         else
         {
-            result = false;
+            return false;
         }
-
-        return result;
     }
 
     public void IAHandBehaviour()
@@ -125,15 +126,15 @@ public class ParOuImpar : JogatinasBehaviours
 
     public void StatusDefault()
     {
-        on = true;
-        ButtonChoice();
+        ButtonToggle(par);
         iaHand.gameObject.SetActive(false);
         tmpTotalValue.text = "";
-        tmpResult.text = "";
-        ButtonInteractable(btnStart, true);
+        tmpResult.text = "";        
         SliderChoice(0);
         slrChoiceValue.value = 0;
-        ButtonInteractable(myHand.GetComponent<Button>(), false);
+        Interactable(false, btnMyHand);
+        Interactable(true, btnStart, btnToggle);
+        slrChoiceValue.interactable = true;
     }
 
     private IEnumerator Cor_Result(bool win)
@@ -147,7 +148,8 @@ public class ParOuImpar : JogatinasBehaviours
             tmpResult.text = "You Loose!";
         }
 
-        ButtonInteractable(btnStart, false);
+        Interactable(false, btnStart, btnToggle);
+        slrChoiceValue.interactable = false;
 
         yield return new WaitForSeconds(3f);
 

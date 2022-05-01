@@ -6,26 +6,29 @@ using TMPro;
 
 public class JogatinasBehaviours : MonoBehaviour
 {
-    public void ButtonInteractable(Button button, bool interactable)
+    public void Interactable(bool interactable, params Button[] button)
     {
-        int childCount;
-
-        childCount = button.transform.childCount;
-
-        if (childCount != 0)
+        for (int i = 0; i < button.Length; i++)
         {
-            for (int i = 0; i < childCount; i++)
+            int childCount;
+
+            childCount = button[i].transform.childCount;
+
+            if (childCount != 0)
             {
-                if (button.transform.GetChild(i).GetComponent<TextMeshProUGUI>() != null)
+                for (int index = 0; index < childCount; index++)
                 {
-                    StartCoroutine(Cor_Interactable(button, interactable, i));
-                    break;
+                    if (button[i].transform.GetChild(index).GetComponent<TextMeshProUGUI>() != null)
+                    {
+                        StartCoroutine(Cor_Interactable(button[i], interactable, index));
+                        break;
+                    }
                 }
             }
-        }
-        else
-        {
-            StartCoroutine(Cor_Interactable(button, interactable));
+            else
+            {
+                StartCoroutine(Cor_Interactable(button[i], interactable));
+            }
         }
     }
 
