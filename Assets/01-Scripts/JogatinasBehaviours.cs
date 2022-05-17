@@ -6,6 +6,8 @@ using TMPro;
 
 public class JogatinasBehaviours : MonoBehaviour
 {
+    public delegate void ButtonFunction(bool on);
+
     public void Interactable(bool interactable, params Button[] button)
     {
         for (int i = 0; i < button.Length; i++)
@@ -32,6 +34,14 @@ public class JogatinasBehaviours : MonoBehaviour
         }
     }
 
+    public void AssignmentButton(ButtonFunction function, Button button, bool pressed)
+    {                
+        button.onClick = new Button.ButtonClickedEvent();
+        button.onClick.AddListener(() => function(pressed));
+
+        function(true);
+    }
+
     IEnumerator Cor_Interactable(Button button, bool interactable)
     {
         button.interactable = interactable;
@@ -46,15 +56,8 @@ public class JogatinasBehaviours : MonoBehaviour
         color = button.transform.GetChild(index).GetComponent<TextMeshProUGUI>().color;
 
         yield return null;
-
-        if (interactable)
-        {
-            color.a = 255;
-        }
-        else
-        {
-            color.a = 127;
-        }
+        
+        color.a = interactable ? 255 : 127;
 
         yield return null;
 

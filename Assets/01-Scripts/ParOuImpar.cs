@@ -66,7 +66,6 @@ public class ParOuImpar : JogatinasBehaviours
 
         StartCoroutine(Cor_Result(myChoice == Result()));
 
-
         tmpTotalValue.text = (myFingers + iaFingers).ToString();
     }
 
