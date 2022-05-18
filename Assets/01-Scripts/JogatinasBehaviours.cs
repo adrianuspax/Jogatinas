@@ -50,14 +50,14 @@ public class JogatinasBehaviours : MonoBehaviour
 
     IEnumerator Cor_Interactable(Button button, bool interactable, int index)
     {
-        Color32 color;
+        Color color;
 
         button.interactable = interactable;
         color = button.transform.GetChild(index).GetComponent<TextMeshProUGUI>().color;
 
         yield return null;
         
-        color.a = interactable ? 255 : 127;
+        color.a = interactable ? 1f : 0.5f;
 
         yield return null;
 
