@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BTNsManager : MonoBehaviour
+public class BTNsManager : Assignments
 {
     public Transform header;
     public Button[] buttons;
@@ -12,19 +12,14 @@ public class BTNsManager : MonoBehaviour
     public Color isPressColor;
     public Color noPressColor;
 
-    private Assignments Assignments;
-
-    public delegate void BehaviourButtons(int index);
-
     private void Awake()
     {
-        New();
-        Assignment(buttons, isPressed, header, ButtonsBehaviour);
+        (buttons, isPressed) = Assignment(header, Behaviour, AnotherBehaviour);
     }
 
     private void Start()
     {
-             
+    
     }
 
     private void Update()
@@ -32,52 +27,10 @@ public class BTNsManager : MonoBehaviour
         
     }
 
-    public void ButtonsBehaviour(int index)
+    public void Behaviour(int index) => Default(index, buttons, isPressed, isPressColor, noPressColor);
+
+    public void AnotherBehaviour(int index)
     {
-        isPressed[index] = !isPressed[index];
-
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            if (i == index && isPressed[index])
-            {
-                buttons[index].transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Bold;
-                buttons[index].image.color = isPressColor;
-            }
-            else
-            {
-                buttons[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
-                buttons[i].image.color = noPressColor;
-                isPressed[i] = false;
-            }
-        }
-    }
-
-    public void New()
-    {
-        buttons = new Button[header.childCount];
-        isPressed = new bool[buttons.Length];        
-    }
-
-    public void Assignment(Button[] buttons, bool[] isPressed, Transform header, BehaviourButtons behaviour)
-    {
-        for (int index = 0; index < buttons.Length; index++)
-        {
-            StartCoroutine(Cor_Assignment(index, buttons, isPressed, header, behaviour));
-        }
-    }
-
-    public IEnumerator Cor_New(Button[] buttons, bool[] isPressed, Transform header)
-    {
-        buttons = new Button[header.childCount];
-        isPressed = new bool[buttons.Length];
-        yield return null;
-    }
-
-    private IEnumerator Cor_Assignment(int index, Button[] buttons, bool[] isPressed, Transform header, BehaviourButtons behaviour)
-    { 
-        buttons[index] = header.GetChild(index).GetComponent<Button>();
-        buttons[index].onClick = new Button.ButtonClickedEvent();
-        buttons[index].onClick.AddListener(() => behaviour(index));
-        yield return null;
+        Debug.Log("AnotherBehaviour");
     }
 }
